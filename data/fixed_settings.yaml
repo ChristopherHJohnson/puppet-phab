@@ -1,0 +1,148 @@
+#These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
+
+ui.footer-items:
+  - {name: Copyright 2014}
+  - {href: 'https://www.wikimedia.org/', name: Wikimedia Foundation}
+  - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
+  - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use', name: Terms of Use}
+  - {href: 'https://wikimediafoundation.org/wiki/Wikimedia:General_disclaimer', name: Disclaimer}
+
+maniphest.priorities:
+  '100':
+    name: 'Unbreak Now!'
+    short: 'Unbreak!'
+    color: indigo
+  '90':
+    name: 'Needs Triage'
+    short: Triage
+    color: violet
+  '80':
+    name: High
+    short: High
+    color: red
+  '50':
+    name: Normal
+    short: Normal
+    color: orange
+  '25':
+    name: Low
+    short: Low
+    color: yellow
+  '10':
+    name: 'Needs Volunteer'
+    short: Voluneer
+    color: sky
+
+# DO NOT CHANGE THESE VALUES.  Must be updated
+# to match in security extensions.
+maniphest.custom-field-definitions:
+  external_reference:
+    name: ext_ref
+    type: text
+    caption: external reference identifier
+    search: true
+  security_topic:
+    instructions: Security settings will override permissions and projects as needed.
+    name: Security
+    description: Used for security oriented custom extensions
+    search: true
+    type: select
+    default: none
+    options:
+      default: none
+      security-bug: 'Security or Sensitive Bug'
+      ops-access-request: 'Operations Access Request'
+      ops-sensitive: 'Operations Sensitive'
+      sensitive: 'Another Private Issue'
+
+maniphest.statuses:
+  open:
+    name: Open
+    special: default
+  needsinfo:
+    name: 'Needs Info'
+    name.full: 'Open, Needs Info'
+    closed: false
+    prefixes: [stalled, info]
+    suffixes: ['as needs info']
+  resolved:
+    name: Resolved
+    name.full: 'Closed, Resolved'
+    closed: true
+    special: closed
+    prefixes: [closed, closes, close, fix, fixes, fixed, resolve, resolves, resolved]
+    suffixes: ['as resolved', 'as fixed']
+  invalid:
+    name: Invalid
+    name.full: "Closed, Invalid"
+    closed: true
+    prefixes: [invalidate, invalidates, invalidated]
+    suffixes: ['as invalid']
+  duplicate:
+    name: Duplicate
+    name.full: "Closed, Duplicate"
+    transaction.icon: fa-times
+    special: duplicate
+    closed: true
+  declined:
+    name: Declined
+    name.full: "Closed, Declined"
+    name.action: Declined
+    transaction.icon: fa-thumbs-o-down
+    closed: true
+    prefixes: [decline, declines, declined]
+    suffixes: ['as declined']
+
+
+policy.allow-public: true
+
+auth.require-approval: false
+
+auth.require-email-verification: true
+
+metamta.user-address-format: 'short'
+
+#modifies behavior of metamta.maniphest.reply-handler-domain
+#don't generate a unique reply hash per user, just per issue
+metamta.public-replies: true
+
+storage.upload-size-limit: 5M
+
+phabricator.serious-business: true
+
+phabricator.show-beta-applications: true
+
+metamta.mail-adapter: 'PhabricatorMailImplementationPHPMailerAdapter'
+
+phpmailer.mailer: 'smtp'
+
+phpmailer.smtp-port: '25'
+
+repository.default-local-path: '/var/repo/'
+
+phabricator.env: 'default'
+
+user.custom-field-definitions:
+  bugzilla_email:
+    name: bugzilla_email
+    type: text
+    caption: email registered to bugzilla.wikimedia.org
+    instructions: This field should contain the email that was registered to the old bugzilla.wikimedia.org
+    search: true
+  rt_email:
+    name: rt_email
+    type: text
+    caption: email registered to rt.wikimedia.org
+    instructions: This field should contain the email that was registered to the old rt.wikimedia.org
+    search: true
+  rt_id:
+    name: rt_id
+    type: text
+    caption: login name for rt
+    instructions: This field should contain the login name for the old rt.bugzilla.org
+    search: true
+
+#we don't host local docs or use the wiki :)
+phabricator.uninstalled-applications:
+  PhabricatorApplicationPhriction: true
+  PhabricatorApplicationDiviner: true
