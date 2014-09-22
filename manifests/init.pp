@@ -119,7 +119,8 @@ class phabricator (
         'php5-curl',
         'php5-cli',
         'php5-json',
-        'ruby1.9.1-full', 
+        'ruby1.9.1-full',
+        'build-essential',
         'php5-ldap']:
             ensure => present;
     }
