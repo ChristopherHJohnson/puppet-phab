@@ -120,6 +120,8 @@ phpmailer.smtp-port: '25'
 
 repository.default-local-path: '/var/repo/'
 
+load-libraries: '/srv/phab/extensions/sprint'
+
 phabricator.env: 'default'
 
 user.custom-field-definitions:
