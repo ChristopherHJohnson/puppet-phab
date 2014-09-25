@@ -173,13 +173,6 @@ class phabricator (
             path    => '/usr/bin:/bin',
         }
 
-        git::clone { 'Sprint':
-            directory => '/srv/phab/extensions/Sprint',
-            ensure  => 'latest',
-            origin    => 'https://github.com/wmde/phabricator-sprint.git',
-            branch    => 'master',
-        }
-        
         phabricator::extension { $extensions:
             rootdir => $phabdir,
             require => Git::Install['phabricator/extensions'],
