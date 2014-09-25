@@ -155,6 +155,13 @@ class phabricator (
         notify    => Exec["ensure_lock_${lock_file}"],
     }
 
+    git::clone { 'phabricator-sprint':
+       directory => '/srv/phab/extensions/sprint',
+       ensure  => 'latest',
+       origin    => 'https://github.com/wmde/phabricator-sprint.git',
+       branch    => 'master',
+    }
+    
     if ($extension_tag) {
 
         $ext_lock_path = "${phabdir}/extension_lock_${extension_tag}"
