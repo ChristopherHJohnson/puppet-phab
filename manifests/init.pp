@@ -167,6 +167,12 @@ class phabricator (
             notify    => Exec[$lib_lock_path],
             before    => Git::Install['phabricator/phabricator'],
         }
+        
+        exec {$lib_lock_path:
+            command => "touch ${lib_lock_path}",
+            unless  => "test -z ${lib_lock_path} || test -e ${lib_lock_path}",
+            path    => '/usr/bin:/bin',
+        }
     }
     
     if ($extension_tag) {
