@@ -156,25 +156,25 @@ class phabricator (
         notify    => Exec["ensure_lock_${lock_file}"],
     }
 
-    if ($lib_tag) {
+    if ($libext_tag) {
     
-        file { '/srv/phab/libraries':
+        file { '/srv/phab/libphutil/src/extensions':
             ensure => 'directory',
         }
         
-        $lib_lock_path = "${phabdir}/library_lock_${lib_tag}"
+        $libext_lock_path = "${phabdir}/library_lock_${libext_tag}"
     
         git::install { 'phabricator/extensions/Sprint':
-            directory => "${phabdir}/libraries/Sprint",
-            git_tag   => $lib_tag,
-            lock_file => $lib_lock_path,
-            notify    => Exec[$lib_lock_path],
+            directory => "${phabdir}/libphutil/src/extensions/Sprint",
+            git_tag   => $libext_tag,
+            lock_file => $libext_lock_path,
+            notify    => Exec[$libext_lock_path],
             before    => Git::Install['phabricator/phabricator'],
         }
         
-        exec {$lib_lock_path:
-            command => "touch ${lib_lock_path}",
-            unless  => "test -z ${lib_lock_path} || test -e ${lib_lock_path}",
+        exec {$libext_lock_path:
+            command => "touch ${libext_lock_path}",
+            unless  => "test -z ${libext_lock_path} || test -e ${libext_lock_path}",
             path    => '/usr/bin:/bin',
         }
     }
