@@ -155,7 +155,7 @@ class phabricator (
         notify    => Exec["ensure_lock_${lock_file}"],
     }
 
-    if ($phab_settings['load-libraries'] {
+    if ($phab_settings['load-libraries']) {
     
         git::install { 'phabricator/extensions/Sprint':
             directory => "${phabdir}/libraries/Sprint",
