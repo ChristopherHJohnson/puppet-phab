@@ -157,6 +157,8 @@ class phabricator (
 
     if ($phab_settings['load-libraries']) {
     
+        $ext_lock_path = "${phabdir}/extension_lock_${extension_tag}"
+    
         git::install { 'phabricator/extensions/Sprint':
             directory => "${phabdir}/libraries/Sprint",
             git_tag   => $extension_tag,
