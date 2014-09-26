@@ -67,6 +67,7 @@ class phabricator (
     $timezone         = 'America/Los_Angeles',
     $lock_file        = '',
     $git_tag          = 'HEAD',
+    $lib_tag          = '',
     $extension_tag    = '',
     $extensions       = [],
     $settings         = {},
