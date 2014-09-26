@@ -158,14 +158,14 @@ class phabricator (
 
     if ($libext_tag) {
     
-        file { '/srv/phab/libphutil/src/extensions':
+        file { '/srv/phab/libext':
             ensure => 'directory',
         }
         
         $libext_lock_path = "${phabdir}/library_lock_${libext_tag}"
     
         git::install { 'phabricator/extensions/Sprint':
-            directory => "${phabdir}/libphutil/src/extensions/Sprint",
+            directory => "${phabdir}/libext/Sprint",
             git_tag   => $libext_tag,
             lock_file => $libext_lock_path,
             notify    => Exec[$libext_lock_path],
