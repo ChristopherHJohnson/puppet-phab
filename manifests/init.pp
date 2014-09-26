@@ -155,20 +155,23 @@ class phabricator (
         notify    => Exec["ensure_lock_${lock_file}"],
     }
 
+    if ($phab_settings['load-libraries'] {
+    
+        git::install { 'phabricator/extensions/Sprint':
+            directory => "${phabdir}/libraries/Sprint",
+            git_tag   => $extension_tag,
+            lock_file => $ext_lock_path,
+            notify    => Exec[$ext_lock_path],
+            before    => Git::Install['phabricator/phabricator'],
+        }
+    }
+    
     if ($extension_tag) {
 
         $ext_lock_path = "${phabdir}/extension_lock_${extension_tag}"
 
         git::install { 'phabricator/extensions':
             directory => "${phabdir}/extensions",
-            git_tag   => $extension_tag,
-            lock_file => $ext_lock_path,
-            notify    => Exec[$ext_lock_path],
-            before    => Git::Install['phabricator/phabricator'],
-        }
-
-        git::install { 'phabricator/extensions/Sprint':
-            directory => "${phabdir}/extensions/Sprint",
             git_tag   => $extension_tag,
             lock_file => $ext_lock_path,
             notify    => Exec[$ext_lock_path],
