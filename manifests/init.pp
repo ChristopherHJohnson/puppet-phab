@@ -158,6 +158,10 @@ class phabricator (
 
     if ($lib_tag) {
     
+        file { '/srv/phab/libraries':
+            ensure => 'directory',
+        }
+        
         $lib_lock_path = "${phabdir}/library_lock_${lib_tag}"
     
         git::install { 'phabricator/extensions/Sprint':
