@@ -1,5 +1,5 @@
 define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname = '*') {
-      git::install { "phabricator/extensions/${libname}" :
+        git::install { "phabricator/extensions/${libname}" :
             directory => "${phabdir}/libext/${libname}",
             git_tag   => $libext_tag,
             lock_file => $libext_lock_path,
@@ -12,4 +12,4 @@ define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname =
             unless  => "test -z ${libext_lock_path} || test -e ${libext_lock_path}",
             path    => '/usr/bin:/bin',
         }
-    }
+}
