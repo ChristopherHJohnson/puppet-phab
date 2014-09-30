@@ -67,8 +67,6 @@ class phabricator (
     $timezone         = 'America/Los_Angeles',
     $lock_file        = '',
     $git_tag          = 'HEAD',
-    $libext_tag       = '',
-    $extension_tag    = '',
     $extensions       = [],
     $settings         = {},
     $mysql_admin_user = '',
@@ -213,9 +211,4 @@ class phabricator (
     }
 }
 
-define phabricator::extension($rootdir='/') {
-    file { "${rootdir}/phabricator/src/extensions/${name}":
-        ensure => link,
-        target => "${rootdir}/extensions/${name}",
-    }
-}
+
