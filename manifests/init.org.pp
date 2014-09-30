@@ -68,6 +68,7 @@ class phabricator (
     $lock_file        = '',
     $git_tag          = 'HEAD',
     $libext_tag       = '',
+    $libraries        = {},
     $extension_tag    = '',
     $extensions       = [],
     $settings         = {},
@@ -120,8 +121,6 @@ class phabricator (
         'php5-curl',
         'php5-cli',
         'php5-json',
-        'ruby-msgpack',
-        'ruby-selinux',
         'php5-ldap']:
             ensure => present;
     }
@@ -157,15 +156,15 @@ class phabricator (
     }
 
     if ($libext_tag) {
-    
-        file { '/srv/phab/libext':
+
+        file { "${phabdir}/libext":
             ensure => 'directory',
         }
-        
-        $phab_settings['load-libraries'] = { 'burndown' => '/srv/phab/libext/Sprint' }
-        
+
+        $phab_settings['load-libraries'] = $libraries
+
         $libext_lock_path = "${phabdir}/library_lock_${libext_tag}"
-    
+
         git::install { 'phabricator/extensions/Sprint':
             directory => "${phabdir}/libext/Sprint",
             git_tag   => $libext_tag,
@@ -173,14 +172,14 @@ class phabricator (
             notify    => Exec[$libext_lock_path],
             before    => Git::Install['phabricator/phabricator'],
         }
-        
+
         exec {$libext_lock_path:
             command => "touch ${libext_lock_path}",
             unless  => "test -z ${libext_lock_path} || test -e ${libext_lock_path}",
             path    => '/usr/bin:/bin',
         }
     }
-    
+
     if ($extension_tag) {
 
         $ext_lock_path = "${phabdir}/extension_lock_${extension_tag}"
