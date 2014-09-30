@@ -1,4 +1,9 @@
 define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname = '*') {
+        
+        file { "${phabdir}/libext":
+            ensure => 'directory',
+        }
+        
         git::install { "phabricator/extensions/${libname}" :
             directory => "${phabdir}/libext/${libname}",
             git_tag   => $libext_tag,
