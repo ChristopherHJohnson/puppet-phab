@@ -162,7 +162,7 @@ class phabricator (
             ensure => 'directory',
         }
         
-        $phab.settings['load-libraries'] => { 'burndown' => '/srv/phab/libext/Sprint' }
+        $phab.settings['load-libraries'] = { 'burndown' => '/srv/phab/libext/Sprint' }
         
         $libext_lock_path = "${phabdir}/library_lock_${libext_tag}"
     
