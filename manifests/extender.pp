@@ -1,28 +1,62 @@
 class phabricator::extender (
-    $phabricator_path = '/usr/local/src/phabricator',
-    $libphutil_path = '/usr/local/src/libphutil',
-    $arcanist_path = '/usr/local/src/arcanist',
+    $libext_tag = '',
+    $extension_tag = '',
 ) {
     include 'git'
 
-    Anchor['phabricator::begin'] ->
-    class { 'arcanist':
-        libphutil_path => $libphutil_path,
-        arcanist_path => $arcanist_path,
-    } ->
-    Anchor['phabricator::end']
+    if ($libext_tag) {
+    
+        file { '/srv/phab/libext':
+            ensure => 'directory',
+        }
+        
+        $libext_lock_path = "${phabdir}/library_lock_${libext_tag}"
+    
+        git::install { 'phabricator/extensions/Sprint':
+            directory => "${phabdir}/libext/Sprint",
+            git_tag   => $libext_tag,
+            lock_file => $libext_lock_path,
+            notify    => Exec[$libext_lock_path],
+            before    => Git::Install['phabricator/phabricator'],
+        }
+        
+        exec {$libext_lock_path:
+            command => "touch ${libext_lock_path}",
+            unless  => "test -z ${libext_lock_path} || test -e ${libext_lock_path}",
+            path    => '/usr/bin:/bin',
+        }
+    }
+    
+    if ($extension_tag) {
 
-    # Ubuntu disables pcntl_* functions in php.ini, but phabricator's daemons need them.
-    exec { "/bin/sed '/^disable_functions = pcntl/d' -i.orig /etc/php5/cli/php.ini":
-        creates => '/etc/php5/cli/php.ini.orig',
-        require => Package['php5-cli'],
-        before => Class['::phabricator::daemons'],
+        $ext_lock_path = "${phabdir}/extension_lock_${extension_tag}"
+
+        git::install { 'phabricator/extensions':
+            directory => "${phabdir}/extensions",
+            git_tag   => $extension_tag,
+            lock_file => $ext_lock_path,
+            notify    => Exec[$ext_lock_path],
+            before    => Git::Install['phabricator/phabricator'],
+        }
+
+        exec {$ext_lock_path:
+            command => "touch ${ext_lock_path}",
+            unless  => "test -z ${ext_lock_path} || test -e ${ext_lock_path}",
+            path    => '/usr/bin:/bin',
+        }
+
+        phabricator::extension { $extensions:
+            rootdir => $phabdir,
+            require => Git::Install['phabricator/extensions'],
+        }
+
     }
 
-    vcsrepo { $phabricator_path:
-        ensure => 'present',
-        provider => 'git',
-        source => 'git://github.com/facebook/phabricator.git',
+    #we ensure lock exists if string is not null
+    exec {"ensure_lock_${lock_file}":
+        command => "touch ${lock_file}",
+        unless  => "test -z ${lock_file} || test -e ${lock_file}",
+        path    => '/usr/bin:/bin',
     }
 
     # Create the database for Phabricator.
