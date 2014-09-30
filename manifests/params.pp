@@ -14,7 +14,7 @@
 # === Examples
 #
 class phabricator::params {
-  $base_dir    = '/usr/src'
+  $base_dir    = '/srv/phab'
   $environment = 'production'
   $user        = 'phabricator'
   $group       = 'phabricator'
