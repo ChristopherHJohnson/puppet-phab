@@ -1,4 +1,4 @@
-define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname = '*') {
+define phabricator::libext ($libname = '*') {
         
         file { "${phabdir}/libext":
             ensure => 'directory',
